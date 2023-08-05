@@ -10,8 +10,13 @@ class Chess
     return 0 <= coordinate[0] && coordinate[0] < ENV_SIZE && 0 <= coordinate[1] && coordinate[1] < ENV_SIZE
   end
 
-  # Generate possible moves
-  def get_moves(coordinate)
+end
+
+
+class Knight < Chess
+
+   # Generate possible moves
+  def get_knight_moves(coordinate)
 
     valid_moves = []
     #Generate all possible moves
@@ -27,5 +32,30 @@ class Chess
     valid_moves
   end
 
+  def breadth_first_search(start, finish)
+    queue = [[start, [start]]]
+    visited = Set.new
+
+    until queue.empty?
+
+      (x, y), moves = queue.shift
+
+      return moves if [x, y] == finish
+      visited.add([x, y])
+
+
+      get_valid_moves([x, y]).each do |nx, ny|
+        if !visited.include?([nx, ny])
+         queue << [[nx, ny], moves + [[nx, ny]]]
+        end
+      end
+    end
+  end
+
+  def knight_moves(start, dest)
+
+    knight_path = breadth_first_search(start, dest)
+    knight_path
+  end
 
 end
