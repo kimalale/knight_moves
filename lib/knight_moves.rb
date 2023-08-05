@@ -1,4 +1,3 @@
-require './lib/binary-search-tree'
 require 'set'
 
 class Chess
@@ -26,12 +25,13 @@ class Knight < Chess
     #Store valid moves
     ENV_SIZE.times do |n|
       move = [coordinate[0] + x[n], coordinate[1] + y[n]]
-      valid_moves << move if is_valid_move(move)
+      valid_moves << move if is_in_bounds(move)
     end
 
     valid_moves
   end
 
+  # Search for the shortest path
   def breadth_first_search(start, finish)
     queue = [[start, [start]]]
     visited = Set.new
@@ -44,7 +44,7 @@ class Knight < Chess
       visited.add([x, y])
 
 
-      get_valid_moves([x, y]).each do |nx, ny|
+      get_knight_moves([x, y]).each do |nx, ny|
         if !visited.include?([nx, ny])
          queue << [[nx, ny], moves + [[nx, ny]]]
         end
